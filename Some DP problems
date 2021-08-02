@@ -1,0 +1,52 @@
+#1. DPRCGRO - PHÂN NHÓM - http://vinhdinhcoder.net/Problem/Details/5216
+
+Kiểu bài này thì gọi f[j][i] là số cách phân nhóm khi lấy nhóm cuối là từ j - i;
+Muốn tính f[j][i], thì phải quan tâm đến đoạn j - 1;
+1 vòng for kiểm tra;
+Khởi tạo f[1][i] luôn luôn = 1
+Source code:
+#include <bits/stdc++.h>
+#define X first
+#define Y second
+using namespace std;
+
+typedef long long ll;
+const int N = 202;
+const int mod = 1e9+7;
+string s;
+int n, f[N][N], pr[N], dem;
+int sum(int i, int j)
+{
+    return pr[j]-pr[i-1];
+}
+int run()
+{
+    dem++;
+    n = s.size();
+    s = " "+s;
+    for (int i=0; i<=n+1; i++)
+        for (int j=0; j<=n+1; j++) f[i][j]=0;
+    for (int i=1; i<=n; i++) f[1][i]=1;
+    for (int i=1; i<=n; i++) pr[i]=pr[i-1]+s[i]-'0';
+    for (int i=2; i<=n; i++)
+        for (int j=2; j<=i; j++)
+            for (int l=1; l<j; l++)
+                if (sum(j,i)>=sum(l,j-1))
+                    f[j][i]=(f[j][i]+f[l][j-1])%mod;
+    ll res = 0;
+    for (int i=1; i<=n; i++) res=(res+f[i][n])%mod;
+    cout<<dem<<". "<<res<<"\n";
+    return 0;
+}
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    while (cin>>s)
+    {
+        if (s=="bye") break;
+        run();
+    }
+    return 0;
+}
